@@ -30,7 +30,7 @@ export default class BookAddPreview extends React.Component {
                 this.setState({ bookIsAdd: true });
                 eventBus.emit('show-msg', {
                   txt: 'Book Add Successfully',
-                  body: 'thank you',
+                  body: <a href={`/#/book/${book.id}`}>Check It Out</a>,
                 });
                 this.onAddBook(book);
               }}

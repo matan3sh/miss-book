@@ -31,7 +31,7 @@ const BookPreview = ({ book }) => {
           <h3 className='text-primary'>
             {title.charAt(0).toUpperCase() + title.slice(1)}{' '}
           </h3>
-          <span className='text-grey'>{categories.toString()}</span>
+          <span className='text-grey'>{categories.join(', ')}</span>
           <ul className='list'>
             <li>
               <ReviewRate rate={bookService.getBookRating(book)} />

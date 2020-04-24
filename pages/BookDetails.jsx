@@ -119,13 +119,13 @@ export default class BookDetails extends React.Component {
               />
               <hr />
               <div>
-                <strong>Category: {book.categories.toString()}</strong>{' '}
+                <strong>Category: {book.categories.join(', ')}</strong>{' '}
                 <span className='page-count'>
                   {this.getPageCountDescription()}
                 </span>{' '}
               </div>
               <div>
-                <strong>Writting By: {book.authors.toString()}</strong>{' '}
+                <strong>Writting By: {book.authors.join(', ')}</strong>{' '}
               </div>
               <div>
                 <strong>Published Year: {book.publishedDate}</strong>{' '}
