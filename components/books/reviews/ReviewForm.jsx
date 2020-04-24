@@ -30,6 +30,13 @@ export default class ReviewForm extends React.Component {
     e.preventDefault();
     const { book } = this.props;
     const { review } = this.state;
+    if (review.fullName === '' || review.textArea === '') {
+      eventBus.emit('show-msg', {
+        txt: 'Error',
+        body: 'Please fill in all fields',
+      });
+      return;
+    }
     this.setState({
       review: {
         id: utilService.makeId(),
