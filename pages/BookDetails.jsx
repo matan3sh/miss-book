@@ -1,6 +1,7 @@
 import bookService from '../services/bookService.js';
 import ReviewList from '../components/books/reviews/ReviewList.jsx';
 import ReviewRate from '../components/books/reviews/ReviewRate.jsx';
+import ReadMore from '../components/books/ReadMore.jsx';
 
 export default class BookDetails extends React.Component {
   state = {
@@ -88,11 +89,6 @@ export default class BookDetails extends React.Component {
     this.setState((prevState) => ({ updatePage: !prevState.updatePage }));
   };
 
-  onShortDescription = () => {
-    let shortDesc = this.state.book.description.slice(0, 100);
-    return <span className='text-grey text-left'>{shortDesc}</span>;
-  };
-
   onToggleReadMore = () => {
     this.setState((prevState) => ({ readMore: !prevState.readMore }));
   };
@@ -130,22 +126,11 @@ export default class BookDetails extends React.Component {
                   </span>
                 )}
               </h2>
-              <h3
-                className='text-grey text-left'
-                onClick={this.onToggleReadMore}
-              >
-                {this.state.readMore ? (
-                  <p>
-                    {book.description}{' '}
-                    <span className='sm-text-grey'>(Show Less)</span>
-                  </p>
-                ) : (
-                  <p>
-                    {this.onShortDescription()}{' '}
-                    <span className='sm-text-grey'>(Read More)</span>
-                  </p>
-                )}
-              </h3>
+              <ReadMore
+                description={book.description}
+                readMore={this.state.readMore}
+                onToggleReadMore={this.onToggleReadMore}
+              />
               <hr />
               <div>
                 <strong>Category: {book.categories.toString()}</strong>{' '}

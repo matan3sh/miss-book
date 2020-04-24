@@ -5,8 +5,14 @@ export default class BookAddPreview extends React.Component {
     bookIsAdd: false,
   };
   onAddBook = (book) => {
-    console.log('Book Saved Succesfuly');
-    bookService.saveBookFromAPI(book);
+    let check = bookService.checkBookFromAPI(book.id);
+    if (check) bookService.saveBookFromAPI(book);
+    else {
+      eventBus.emit('show-msg', {
+        txt: 'Book Already in Database',
+        body: '',
+      });
+    }
   };
   render() {
     const { book } = this.props;

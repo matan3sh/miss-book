@@ -8,6 +8,7 @@ export default {
   removeReview,
   saveBooksFromAPI,
   saveBookFromAPI,
+  checkBookFromAPI,
 };
 
 const KEY = 'books';
@@ -45,6 +46,14 @@ function save(book) {
     gBooks.push(book);
   }
   storageService.store(KEY, gBooks);
+}
+
+function checkBookFromAPI(bookId) {
+  let res = true;
+  gBooks.forEach((book) => {
+    if (book.id === bookId) res = false;
+  });
+  return res;
 }
 
 function saveBookFromAPI(book) {
