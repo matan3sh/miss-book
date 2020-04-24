@@ -3,6 +3,8 @@ import ReviewList from '../components/books/reviews/ReviewList.jsx';
 import ReviewRate from '../components/books/reviews/ReviewRate.jsx';
 import ReadMore from '../components/books/ReadMore.jsx';
 
+const { Link } = ReactRouterDOM;
+
 export default class BookDetails extends React.Component {
   state = {
     book: null,
@@ -11,9 +13,22 @@ export default class BookDetails extends React.Component {
   };
 
   componentDidMount() {
-    const id = this.props.match.params.bookId;
-    bookService.getById(id).then((book) => this.setState({ book }));
+    this.loadBook();
   }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.match.params.bookId !== this.props.match.params.bookId) {
+      this.loadBook();
+    }
+  }
+
+  loadBook = () => {
+    const id = this.props.match.params.bookId;
+    bookService.getById(id).then((book) => {
+      this.setState({ book });
+    });
+    this.prevNext = bookService.getNextPrevBooks(id);
+  };
 
   getCurrencyIcon = () => {
     switch (this.state.book.listPrice.currencyCode) {
@@ -55,16 +70,6 @@ export default class BookDetails extends React.Component {
     return this.state.book.listPrice['amount'] > 150 ? 'danger' : 'success';
   };
 
-  onRemoveBook = () => {
-    bookService
-      .remove(this.state.book.id)
-      .then(() => {
-        console.log('Book Removed');
-        this.props.history.push('/book');
-      })
-      .catch((err) => console.error(err));
-  };
-
   onRemoveReview = (reviewId) => {
     bookService.removeReview(this.state.book, reviewId);
     this.onRenderUpdatedPage();
@@ -72,11 +77,11 @@ export default class BookDetails extends React.Component {
 
   onRenderUpdatedPage = () => {
     bookService.save(this.state.book);
-    this.setState((prevState) => ({ updatePage: !prevState.updatePage }));
+    this.setState(({ updatePage }) => ({ updatePage: !updatePage }));
   };
 
   onToggleReadMore = () => {
-    this.setState((prevState) => ({ readMore: !prevState.readMore }));
+    this.setState(({ readMore }) => ({ readMore: !readMore }));
   };
 
   render() {
@@ -147,6 +152,14 @@ export default class BookDetails extends React.Component {
               )}
             </div>
           </div>
+        </div>
+        <div className='text-center my-1'>
+          <Link to={`/book/${this.prevNext.prevId}`}>
+            <button className='bottom-nav'>Prev</button>
+          </Link>{' '}
+          <Link to={`/book/${this.prevNext.nextId}`}>
+            <button className='bottom-nav'>Next</button>
+          </Link>{' '}
         </div>
         <ReviewList
           reviews={book.reviews}

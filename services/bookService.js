@@ -10,6 +10,7 @@ export default {
   saveBooksFromAPI,
   saveBookFromAPI,
   checkBookFromAPI,
+  getNextPrevBooks,
 };
 
 const KEY = 'books';
@@ -101,6 +102,33 @@ function removeReview(book, reviewId) {
   gBooks[bookIdx] = book;
   storageService.store(KEY, gBooks);
   return Promise.resolve();
+}
+
+function getById(bookId) {
+  const book = gBooks.find((book) => book.id === bookId);
+  return Promise.resolve(book);
+}
+
+function getNextPrevBooks(bookId) {
+  const currentBookIdx = _getIdxById(bookId);
+  const prevBookIdx = currentBookIdx - 1;
+  const nextBookIdx = currentBookIdx + 1;
+  if (prevBookIdx < 0)
+    return {
+      nextId: gBooks[nextBookIdx].id,
+      prevId: bookId,
+    };
+  if (nextBookIdx === gBooks.length)
+    return {
+      nextId: bookId,
+      prevId: gBooks[prevBookIdx].id,
+    };
+  else {
+    return {
+      nextId: gBooks[nextBookIdx].id,
+      prevId: gBooks[prevBookIdx].id,
+    };
+  }
 }
 
 function _getIdxById(bookId) {

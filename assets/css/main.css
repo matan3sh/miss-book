@@ -711,3 +711,21 @@ h3 {
     justify-content: center;
   }
 }
+
+/* Bottom Book Details Page Navigation */
+.bottom-nav {
+  background-color: var(--primary-color);
+  border: 0;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  color: #fff;
+  font-size: 14px;
+  padding: 10px 25px;
+  cursor: pointer;
+}
+
+.bottom-nav:hover {
+  background-color: #333;
+  color: var(--light-color);
+  transition: background-color 0.2s ease-in;
+}
