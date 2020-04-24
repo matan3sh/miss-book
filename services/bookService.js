@@ -5,6 +5,7 @@ export default {
   remove,
   getById,
   save,
+  getBookRating,
   removeReview,
   saveBooksFromAPI,
   saveBookFromAPI,
@@ -68,6 +69,20 @@ function saveBooksFromAPI(books) {
 function getById(bookId) {
   const book = gBooks.find((book) => book.id === bookId);
   return Promise.resolve(book);
+}
+
+function getBookRating(book) {
+  const { reviews } = book;
+  if (reviews === undefined) return 0;
+  if (reviews.length > 0) {
+    let count = 0;
+    for (let i = 0; i < reviews.length; i++) {
+      count += +reviews[i].rate;
+    }
+    const avg = count / reviews.length;
+    let res = (avg * 100) / 5;
+    return res;
+  } else return 0;
 }
 
 function remove(bookId) {

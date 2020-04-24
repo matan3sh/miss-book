@@ -15,20 +15,6 @@ export default class BookDetails extends React.Component {
     bookService.getById(id).then((book) => this.setState({ book }));
   }
 
-  getBookRating = () => {
-    const { reviews } = this.state.book;
-    if (reviews === undefined) return 0;
-    if (reviews.length > 0) {
-      let count = 0;
-      for (let i = 0; i < reviews.length; i++) {
-        count += +reviews[i].rate;
-      }
-      const avg = count / reviews.length;
-      let res = (avg * 100) / 5;
-      return res;
-    } else return 0;
-  };
-
   getCurrencyIcon = () => {
     switch (this.state.book.listPrice.currencyCode) {
       case 'USD':
@@ -115,10 +101,10 @@ export default class BookDetails extends React.Component {
                 <span className='book-subtitle-detals'>- {book.subtitle}</span>
               </h2>
               <h2 className='text-left text-danger book-categories-details'>
-                <ReviewRate rate={this.getBookRating()} />
+                <ReviewRate rate={bookService.getBookRating(book)} />
                 <span className='text-grey'>
                   {' '}
-                  {parseInt(this.getBookRating() * 5) / 100}/5
+                  {parseInt(bookService.getBookRating(book) * 5) / 100}/5
                 </span>{' '}
                 {book.reviews && (
                   <span className='text-grey text-small'>

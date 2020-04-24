@@ -1,16 +1,7 @@
+import utilService from '../../../services/utilService.js';
 import ReviewRate from './ReviewRate.jsx';
 
 const ReviewPreview = ({ review, onRemoveReview }) => {
-  const getFormattedDate = (date) => {
-    var d = new Date(date),
-      month = '' + (d.getMonth() + 1),
-      day = '' + d.getDate(),
-      year = d.getFullYear();
-    if (month.length < 2) month = '0' + month;
-    if (day.length < 2) day = '0' + day;
-    return [day, month, year].join('-');
-  };
-
   return (
     <div>
       <div className='card-review grid-2'>
@@ -22,7 +13,9 @@ const ReviewPreview = ({ review, onRemoveReview }) => {
             style={{ width: '50px' }}
           />
           <div>{review.fullName}</div>
-          <div className='text-grey'>{getFormattedDate(review.readAt)}</div>
+          <div className='text-grey'>
+            {utilService.getFormattedDate(review.readAt)}
+          </div>
           <ReviewRate rate={(100 / 5) * review.rate} />
         </div>
         <div className='grid-1'>

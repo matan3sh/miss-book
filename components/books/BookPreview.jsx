@@ -1,22 +1,10 @@
 const { Link } = ReactRouterDOM;
 
+import bookService from '../../services/bookService.js';
 import ReviewRate from '../books/reviews/ReviewRate.jsx';
 
 const BookPreview = ({ book }) => {
   const { title, categories, listPrice, thumbnail } = book;
-
-  const getBookRating = () => {
-    if (book.reviews === undefined) return 0;
-    if (book.reviews.length > 0) {
-      let count = 0;
-      for (let i = 0; i < book.reviews.length; i++) {
-        count += +book.reviews[i].rate;
-      }
-      const avg = count / book.reviews.length;
-      let res = (avg * 100) / 5;
-      return res;
-    } else return 0;
-  };
 
   const getCurrencyIcon = () => {
     switch (listPrice.currencyCode) {
@@ -46,7 +34,7 @@ const BookPreview = ({ book }) => {
           <span className='text-grey'>{categories.toString()}</span>
           <ul className='list'>
             <li>
-              <ReviewRate rate={getBookRating()} />
+              <ReviewRate rate={bookService.getBookRating(book)} />
             </li>
             <li>
               <span
