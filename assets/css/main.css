@@ -213,6 +213,12 @@ img {
   margin-bottom: 1rem;
 }
 
+.sm-text-grey {
+  font-size: 12px;
+  color: grey;
+  cursor: pointer;
+}
+
 .text-small {
   font-size: 12px;
 }

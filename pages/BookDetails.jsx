@@ -6,6 +6,7 @@ export default class BookDetails extends React.Component {
   state = {
     book: null,
     updatePage: false,
+    readMore: false,
   };
 
   componentDidMount() {
@@ -87,6 +88,15 @@ export default class BookDetails extends React.Component {
     this.setState((prevState) => ({ updatePage: !prevState.updatePage }));
   };
 
+  onShortDescription = () => {
+    let shortDesc = this.state.book.description.slice(0, 100);
+    return <span className='text-grey text-left'>{shortDesc}</span>;
+  };
+
+  onToggleReadMore = () => {
+    this.setState((prevState) => ({ readMore: !prevState.readMore }));
+  };
+
   render() {
     const { book } = this.state;
     const Loading = <p>Loading...</p>;
@@ -120,7 +130,22 @@ export default class BookDetails extends React.Component {
                   </span>
                 )}
               </h2>
-              <h3 className='text-grey text-left'>{book.description}</h3>
+              <h3
+                className='text-grey text-left'
+                onClick={this.onToggleReadMore}
+              >
+                {this.state.readMore ? (
+                  <p>
+                    {book.description}{' '}
+                    <span className='sm-text-grey'>(Show Less)</span>
+                  </p>
+                ) : (
+                  <p>
+                    {this.onShortDescription()}{' '}
+                    <span className='sm-text-grey'>(Read More)</span>
+                  </p>
+                )}
+              </h3>
               <hr />
               <div>
                 <strong>Category: {book.categories.toString()}</strong>{' '}
