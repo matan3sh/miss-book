@@ -86,7 +86,7 @@ export default class ReviewForm extends React.Component {
               className='btn btn-primary my-1'
               onClick={() => {
                 eventBus.emit('show-msg', {
-                  txt: 'Review Add Successfully',
+                  txt: 'Review Added Successfully',
                   body: 'thank you for your honest opinion :)',
                 });
               }}

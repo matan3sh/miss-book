@@ -19,7 +19,7 @@ const Navbar = ({ title, icon }) => {
         </li>
         <li>
           <NavLink exact to='/addbook'>
-            Google Books
+            GBooks
           </NavLink>
         </li>
         <li>

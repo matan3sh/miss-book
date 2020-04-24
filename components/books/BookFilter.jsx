@@ -1,5 +1,3 @@
-import eventBus from '../../services/eventBusService.js';
-
 export default class BookFilter extends React.Component {
   state = {
     filter: {
@@ -7,6 +5,7 @@ export default class BookFilter extends React.Component {
       maxPrice: '',
       minPrice: '',
     },
+    openFilter: false,
   };
 
   onChange = ({ target }) => {
@@ -27,32 +26,62 @@ export default class BookFilter extends React.Component {
     this.props.onSetFilter(this.state.filter);
   };
 
+  openFilter = () => {
+    this.setState((prevState) => ({ openFilter: !prevState.openFilter }));
+  };
+
   render() {
     const { title, maxPrice, minPrice } = this.state.filter;
     return (
       <form onSubmit={this.onSubmit}>
-        <input
-          name='title'
-          type='text'
-          placeholder='Search By Title'
-          value={title}
-          onChange={this.onChange}
-        />
-        {/* <input
-          name='maxPrice'
-          type='number'
-          placeholder='Max Price'
-          value={maxPrice}
-          onChange={this.onChange}
-        />
-        <input
-          name='minPrice'
-          type='number'
-          placeholder='Min Price'
-          value={minPrice}
-          onChange={this.onChange}
-        /> */}
-        <button className='btn btn-primary btn-block'>Filter</button>
+        {this.state.openFilter && (
+          <React.Fragment>
+            <div className='card-review'>
+              <input
+                name='title'
+                type='text'
+                placeholder='Search By Title'
+                value={title}
+                onChange={this.onChange}
+              />
+            </div>
+            <div className='min-max-filter text-center filter-grid-3 card-review'>
+              <div>
+                <span>{minPrice}</span>
+                <input
+                  type='range'
+                  name='minPrice'
+                  min='1'
+                  max='200'
+                  step='1'
+                  value={minPrice}
+                  onChange={this.onChange}
+                />
+              </div>
+              <h3 className='filter-title '>
+                <i className='fas fa-coins'></i>
+              </h3>
+              <div>
+                <span>{maxPrice}</span>
+                <input
+                  type='range'
+                  name='maxPrice'
+                  min='1'
+                  max='200'
+                  step='1'
+                  value={maxPrice}
+                  onChange={this.onChange}
+                />
+              </div>
+            </div>
+          </React.Fragment>
+        )}
+        <button
+          className='btn btn-dark btn-block my-1'
+          onClick={this.openFilter}
+        >
+          {this.state.openFilter ? 'Search' : 'Filter'}
+        </button>
       </form>
     );
   }

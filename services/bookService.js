@@ -22,10 +22,16 @@ function _createBooks() {
 }
 
 function query(filterBy) {
-  const books = gBooks;
+  let books = gBooks;
   if (filterBy) {
-    books = gBooks.filter((book) =>
-      book.title.toUpperCase().includes(filterBy.title.toUpperCase())
+    let { title, maxPrice, minPrice } = filterBy;
+    maxPrice = maxPrice || Infinity;
+    minPrice = minPrice || 0;
+    books = gBooks.filter(
+      (book) =>
+        book.title.includes(title) &&
+        book.listPrice.amount < maxPrice &&
+        book.listPrice.amount > minPrice
     );
   }
   return Promise.resolve(books);

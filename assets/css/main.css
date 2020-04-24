@@ -77,6 +77,26 @@ img {
   opacity: 0.9;
 }
 
+.min-max-filter input {
+  display: inline-block;
+  width: 50%;
+}
+
+.filter-grid-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 1rem;
+}
+
+.filter-title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  margin: auto;
+}
+
 /* Home Page */
 .landing {
   position: relative;
