@@ -1,3 +1,4 @@
+import bookService from '../services/bookService.js';
 import Spinner from '../components/layout/Spinner.jsx';
 import BookAddList from '../components/books/BookAddList.jsx';
 
@@ -9,48 +10,17 @@ export default class BookAdd extends React.Component {
   };
 
   componentDidMount() {
-    this.loadBooks();
     this.setState({ loading: true });
+    this.loadBooks();
     setTimeout(() => {
       this.setState({ loading: false });
-    }, 2000);
+    }, 1000);
   }
 
   loadBooks = () => {
     if (this.state.bookName === '') return;
     var books = [];
-    axios
-      .get(
-        `https://www.googleapis.com/books/v1/volumes?printType=books&q=${this.state.bookName}`
-      )
-      .then((res) => {
-        res.data.items.forEach((item) => {
-          let book = {
-            id: item.id,
-            title: item.volumeInfo.title,
-            subtitle: item.volumeInfo.subtitle,
-            authors: item.volumeInfo.authors,
-            publishedDate: item.volumeInfo.publishedDate,
-            description: item.volumeInfo.description,
-            pageCount: item.volumeInfo.pageCount,
-            categories: item.volumeInfo.categories,
-            thumbnail: item.volumeInfo.imageLinks.thumbnail,
-            language: item.volumeInfo.language,
-            listPrice: {
-              amount:
-                item.saleInfo.saleability === 'FOR_SALE'
-                  ? item.saleInfo.listPrice.amount
-                  : 0,
-              currencyCode:
-                item.saleInfo.saleability === 'FOR_SALE'
-                  ? item.saleInfo.listPrice.currencyCode
-                  : 'NONE',
-              isOnSale: item.saleInfo.saleability === 'FOR_SALE' ? true : false,
-            },
-          };
-          books.push(book);
-        });
-      });
+    bookService.getBooksFromAPI(this.state.bookName, books);
     this.setState({ books });
   };
 

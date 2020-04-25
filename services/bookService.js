@@ -11,6 +11,7 @@ export default {
   saveBookFromAPI,
   checkBookFromAPI,
   getNextPrevBooks,
+  getBooksFromAPI,
 };
 
 const KEY = 'books';
@@ -48,6 +49,54 @@ function save(book) {
     gBooks.push(book);
   }
   storageService.store(KEY, gBooks);
+}
+
+async function getBooksFromAPI(bookName, books) {
+  const url = `https://www.googleapis.com/books/v1/volumes?printType=books&q=${bookName}`;
+  const res = await axios.get(url);
+  res.data.items.forEach((item) => {
+    let book = {
+      id: item.id,
+      title: item.volumeInfo.title
+        ? item.volumeInfo.title
+        : 'No Title Provided',
+      subtitle: item.volumeInfo.subtitle
+        ? item.volumeInfo.subtitle
+        : 'No Subtitle Provided',
+      authors: item.volumeInfo.authors
+        ? item.volumeInfo.authors
+        : ['No Author Name Provided'],
+      publishedDate: item.volumeInfo.publishedDate
+        ? item.volumeInfo.publishedDate
+        : 'No Published Date Provided',
+      description: item.volumeInfo.description
+        ? item.volumeInfo.description
+        : 'No Description Provided',
+      pageCount: item.volumeInfo.pageCount,
+      categories: item.volumeInfo.categories
+        ? item.volumeInfo.categories
+        : ['No Categories Provided'],
+      thumbnail: item.volumeInfo.imageLinks.thumbnail
+        ? item.volumeInfo.imageLinks.thumbnail
+        : 'No Image Provided',
+      language: item.volumeInfo.language
+        ? item.volumeInfo.language
+        : 'No Language Provided',
+      listPrice: {
+        amount:
+          item.saleInfo.saleability === 'FOR_SALE'
+            ? item.saleInfo.listPrice.amount
+            : 0,
+        currencyCode:
+          item.saleInfo.saleability === 'FOR_SALE'
+            ? item.saleInfo.listPrice.currencyCode
+            : 'NONE',
+        isOnSale: item.saleInfo.saleability === 'FOR_SALE' ? true : false,
+      },
+    };
+    books.push(book);
+  });
+  return books;
 }
 
 function checkBookFromAPI(bookId) {
